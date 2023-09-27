@@ -1,5 +1,5 @@
 import requests
-from pprint import pprint
+
 from country_codes import COUNTRIES
 
 
@@ -16,6 +16,9 @@ class Guesser:
             return None
         return response.json()
 
+    def __country_code_to_emoji(self, country_code):
+        return "".join(chr(ord(c) + 127397) for c in country_code.upper())
+
     def age(self, name):
         return self.__get(name, self.age_endpoint)["age"]
 
@@ -27,4 +30,4 @@ class Guesser:
         if data["count"] == 0:
             return None
         id = data["country"][0]["country_id"]
-        return COUNTRIES[id]
+        return COUNTRIES[id] + " " + self.__country_code_to_emoji(id)
